@@ -291,25 +291,25 @@ public class ScapeRoom extends Juego {
 
     }
 
+// 1.7 Puzzles pendientes
+public boolean hayPuzzlesPendientes() {
+    return puzzles.stream().anyMatch(p -> !p.isResuelto());
+}
 
-    //1.7 hay puzzles pendientes REVISAR
-    /*
-        añade un método hayPuzzlesPendientes() que devuelva true si queda al menos un puzzle sin resolver y hayNPuzzlesPendientes(int n) que devuelva true si quedan n puzzles sin resolver. 
-    */
+public boolean hayNPuzzlesPendientes(int n) {
+    long pendientes = puzzles.stream()
+                              .filter(p -> !p.isResuelto())
+                              .count();
+    return pendientes == n;
+}
 
-    public boolean getPuzzlesPendientes1(){
-          return puzzles.stream().filter(p -> !isResuelto());
-
+// 1.8 Mover puzzle al principio
+public void moverPuzzleAlPrincipio(int indice) {
+    try {
+        Collections.swap(puzzles, indice, 0);
+        System.out.println("Puzzle movido a la posición inicial");
+    } catch (IndexOutOfBoundsException e) {
+        System.err.println("Error: no existe puzzle en la posición " + indice);
     }
-
-    public void getNPuzzlesPendientes(int n){
-        return puzzles.stream().filter(p -> !isResuelto()).count();
-
-    }
-
-    //1.8 mover puzzle al principio
-    /*
-     moverPuzzleAlPrincipio(int indice) que intercambie el puzzle de esa posición con el que está en la posición 0, usando Collections.swap()controlando también con try/catch un índice fuera de rango.
-
-     */
+}
 }
