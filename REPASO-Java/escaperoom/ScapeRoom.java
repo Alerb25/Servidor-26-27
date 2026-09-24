@@ -297,7 +297,7 @@ public class ScapeRoom extends Juego {
         añade un método hayPuzzlesPendientes() que devuelva true si queda al menos un puzzle sin resolver y hayNPuzzlesPendientes(int n) que devuelva true si quedan n puzzles sin resolver. 
     */
 
-    public boolean getPuzzlesPendientes(){
+    public boolean getPuzzlesPendientes1(){
           return puzzles.stream().filter(p -> !isResuelto());
 
     }
