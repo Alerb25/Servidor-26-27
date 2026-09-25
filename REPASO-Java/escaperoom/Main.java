@@ -11,8 +11,6 @@ public class Main {
         System.out.println("DEMOSTRACIÓN DE CONCEPTOS DE POO EN JAVA");
 
         System.out.println("=".repeat(60));
-
-        
         
           private static void demostrarArrays() {
 
@@ -112,7 +110,7 @@ public class Main {
 
 
     
-        demostrarSimulacionJuego() {
+        public void demostrarSimulacionJuego() {
         }
 
            private static void demostrarEstructurasDatos() {
