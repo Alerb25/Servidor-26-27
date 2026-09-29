@@ -35,6 +35,9 @@ public class Juego {
 
     }
 
+    /** 
+     * @return String
+     */
     // ====== GETTERS ======
 
     public String getNombre() {
@@ -43,30 +46,45 @@ public class Juego {
 
     }
 
+    /** 
+     * @return int
+     */
     public int getMaxJugadores() {
 
         return maxJugadores;
 
     }
 
+    /** 
+     * @return int
+     */
     public int getDuracionMinutos() {
 
         return duracionMinutos;
 
     }
 
+    /** 
+     * @return int
+     */
     public int getPuntuacion() {
 
         return puntuacion;
 
     }
 
+    /** 
+     * @return boolean
+     */
     public boolean isEstaActivo() {
 
         return estaActivo;
 
     }
 
+    /** 
+     * @param puntuacion
+     */
     // ====== SETTERS ======
 
     public void setPuntuacion(int puntuacion) {
@@ -83,6 +101,9 @@ public class Juego {
 
     }
 
+    /** 
+     * @param maxJugadores
+     */
     public void setMaxJugadores(int maxJugadores) {
 
         if (maxJugadores > 0) {
@@ -117,6 +138,9 @@ public class Juego {
 
     }
 
+    /** 
+     * @param puntos
+     */
     public void agregarPuntos(int puntos) {
 
         if (puntos > 0) {
@@ -133,6 +157,9 @@ public class Juego {
 
     }
 
+    /** 
+     * @param puntos
+     */
     //1.1 RESTAR PUNTOS
 
     public void restarPuntos(int puntos){
@@ -149,6 +176,9 @@ public class Juego {
         }
     }
 
+    /** 
+     * @return String
+     */
     @Override
 
     public String toString() {

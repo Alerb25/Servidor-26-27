@@ -36,18 +36,27 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @return String
+     */
     public String getTematica() {
 
         return tematica;
 
     }
 
+    /** 
+     * @param tematica
+     */
     public void setTematica(String tematica) {
 
         this.tematica = tematica;
 
     }
 
+    /** 
+     * @return List<Puzzle>
+     */
     // Encapsulación defensiva: se devuelve una copia para que quien reciba
 
     // la lista no pueda modificar la lista interna del objeto
@@ -58,12 +67,18 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @return int
+     */
     public int getNumPuzzles() {
 
         return puzzles.size();
 
     }
 
+    /** 
+     * @return long
+     */
     //Funcion de cuenta con filtro de funcion booleana
 
     public long getPuzzlesResueltos() {
@@ -78,12 +93,18 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @return String
+     */
     public String getNivelDificultad() {
 
         return nivelDificultad;
 
     }
 
+    /** 
+     * @param nivelDificultad
+     */
     public void setNivelDificultad(String nivelDificultad) {
 
         this.nivelDificultad = nivelDificultad;
@@ -96,6 +117,9 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param puzzle
+     */
     public void agregarPuzzle(Puzzle puzzle) {
 
         if (puzzle != null) {
@@ -114,6 +138,9 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param nuevosPuzzles
+     */
     // Varargs: permite pasar cero, uno o varios puzzles separados por comas
 
     public void agregarPuzzles(Puzzle... nuevosPuzzles) {
@@ -126,6 +153,10 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param puzzleId
+     * @return boolean
+     */
     public boolean eliminarPuzzle(int puzzleId) {
 
         boolean eliminado = puzzles.removeIf(p -> p.getId() == puzzleId);
@@ -144,6 +175,10 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param indice
+     * @return Puzzle
+     */
     public Puzzle obtenerPuzzlePorIndice(int indice) {
 
         try {
@@ -169,11 +204,18 @@ public class ScapeRoom extends Juego {
     }
 
 
+    /** 
+     * @param puzzleId
+     */
     // 1.4 EXISTEPUZZLE()
     public void existePuzzle(int puzzleId){
         puzzles.stream().contains(puzzleId).anyMatch();
     }
 
+   /** 
+    * @param nombre
+    * @return Puzzle
+    */
    public Puzzle buscarPuzzle(String nombre) {
 
         for (Puzzle puzzle : puzzles) {
@@ -190,6 +232,10 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param nombre
+     * @return Optional<Puzzle>
+     */
     public Optional<Puzzle> buscarPuzzleStream(String nombre) {
 
         return puzzles.stream()
@@ -202,6 +248,10 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param texto
+     * @return long
+     */
     //1.5 contar PUZZLES CON NOMBRE
     public long contarPuzzlesconNombre(String texto){
         return puzzles.stream().contains(texto.toLowerCase()).count();
@@ -215,6 +265,11 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param minPuntos
+     * @param maxPuntos
+     * @return List<Puzzle>
+     */
     public List<Puzzle> filtrarPuzzlesPorPuntos(int minPuntos, int maxPuntos) {
 
         return puzzles.stream()
@@ -227,6 +282,10 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param n
+     * @return List<Puzzle>
+     */
     public List<Puzzle> obtenerTopPuzzles(int n) {
 
         return puzzles.stream()
@@ -241,6 +300,10 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @param n
+     * @return List<Puzzle>
+     */
     //1.6 Obtener Puzzle Menos Valioso
     public List<Puzzle> obtenerPuzzlesMenosValiosos(int n){
        return puzzles.stream()
@@ -273,6 +336,9 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @return double
+     */
     public double calcularProgreso() {
 
         if (puzzles.isEmpty()) {
@@ -285,17 +351,27 @@ public class ScapeRoom extends Juego {
 
     }
 
+    /** 
+     * @return boolean
+     */
     public boolean estaCompletado() {
 
         return puzzles.stream().allMatch(Puzzle::isResuelto);
 
     }
 
+/** 
+ * @return boolean
+ */
 // 1.7 Puzzles pendientes
 public boolean hayPuzzlesPendientes() {
     return puzzles.stream().anyMatch(p -> !p.isResuelto());
 }
 
+/** 
+ * @param n
+ * @return boolean
+ */
 public boolean hayNPuzzlesPendientes(int n) {
     long pendientes = puzzles.stream()
                               .filter(p -> !p.isResuelto())
@@ -303,6 +379,9 @@ public boolean hayNPuzzlesPendientes(int n) {
     return pendientes == n;
 }
 
+/** 
+ * @param indice
+ */
 // 1.8 Mover puzzle al principio
 public void moverPuzzleAlPrincipio(int indice) {
     try {
