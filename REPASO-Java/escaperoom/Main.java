@@ -4,6 +4,9 @@ import java.util.stream.Collectors;
 
 public class Main {
 
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
 
         System.out.println("=".repeat(60));
@@ -106,6 +109,7 @@ public class Main {
         escape.barajarPuzzles();
 
     }
+
 
 
 

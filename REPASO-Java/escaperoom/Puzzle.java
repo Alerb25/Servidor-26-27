@@ -52,6 +52,9 @@ public class Puzzle {
 
     }
 
+    /** 
+     * @return int
+     */
     // ====== GETTERS ======
 
     public int getId() {
@@ -60,42 +63,63 @@ public class Puzzle {
 
     }
 
+    /** 
+     * @return String
+     */
     public String getNombre() {
 
         return nombre;
 
     }
 
+    /** 
+     * @return String
+     */
     public String getDescripcion() {
 
         return descripcion;
 
     }
 
+    /** 
+     * @return int
+     */
     public int getPuntos() {
 
         return puntos;
 
     }
 
+    /** 
+     * @return boolean
+     */
     public boolean isResuelto() {
 
         return resuelto;
 
     }
 
+    /** 
+     * @return int
+     */
     public int getIntentos() {
 
         return intentos;
 
     }
 
+    /** 
+     * @return String
+     */
     public String getPista() {
 
         return pista;
 
     }
 
+    /** 
+     * @param nombre
+     */
     // ====== SETTERS ======
 
     public void setNombre(String nombre) {
@@ -104,12 +128,19 @@ public class Puzzle {
 
     }
 
+    /** 
+     * @param descripcion
+     */
     public void setDescripcion(String descripcion) {
 
         this.descripcion = descripcion;
 
     }
 
+    /** 
+     * @param respuesta
+     * @return boolean
+     */
     // ====== MÉTODOS DE LÓGICA DE NEGOCIO ======
 
     public boolean intentarResolver(String respuesta) {
@@ -156,18 +187,27 @@ public class Puzzle {
 
     }
 
+    /** 
+     * @return Puzzle
+     */
     public Puzzle clonar() {
 
         return new Puzzle(nombre, descripcion, solucion, puntos, pista);
 
     }
 
+    /** 
+     * @return int
+     */
     // 1.2 GET TOTAL
     public static int getTotalPuzzlesCreados(){
         
         return contadorId;
     }
 
+    /** 
+     * @return String
+     */
     @Override
 
     public String toString() {
@@ -180,6 +220,10 @@ public class Puzzle {
 
     }
 
+    /** 
+     * @param obj
+     * @return boolean
+     */
     @Override
 
     public boolean equals(Object obj) {
