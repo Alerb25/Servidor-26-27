@@ -44,8 +44,8 @@ public class Pedido {
 
     //relacion pedido-cl
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "pedido_id", nullable = false)
-    private Pedido pedido;
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
 
 
