@@ -26,7 +26,7 @@ public class Paciente {
 
     @Id // hace que sea clave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Para que sea automatico
-    private long id;
+    private long id_paciente;
 
     @Column(nullable = false)
     private String nombre_completo;
@@ -48,8 +48,8 @@ public class Paciente {
     public void addPaciente(Paciente paciente) {
         // añadimos la Paciente a la lista de Pacientees del cliente
         pacientes.add(paciente);
-        // Le decimos que la Paciente pertenece a este cliente(si, da error)
-        paciente.setCliente(this);
+        // Le decimos que la Paciente pertenece a este paciente(si, da error)
+        paciente.setPaciente(this);
     }
 
 }

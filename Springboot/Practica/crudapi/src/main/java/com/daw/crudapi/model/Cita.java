@@ -29,7 +29,7 @@ public class Cita {
 
     @Id // hace que sea clave primaria
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Para que sea automatico
-    private long id;
+    private long id_cita;
 
     @Column(nullable = false)
     private String motivo_cita;
@@ -52,5 +52,9 @@ public class Cita {
     @ManyToOne
     @JoinColumn(name = "paciente_id", nullable = false) // nombre de la foreing key
     private Paciente paciente;
+
+    @ManyToOne
+    @JoinColumn(name = "habitacion_id", nullable = false) // nombre de la foreing key
+    private Habitacion habitacion;
 
 }
