@@ -1,18 +1,15 @@
 package com.daw.crudapi.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -21,12 +18,12 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-
+@NoArgsConstructor
 public class Direccion {
 
-    @Id // hace que sea clave primaria
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Para que sea automatico
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String calle;
@@ -41,21 +38,14 @@ public class Direccion {
     private String codigoPostal;
 
     // Una direccion tiene muchos clientes
-    // Usamos JoinColumn para especificar el nombre de la fk, apunta automaticamente
+    @ManyToOne
+    // usamos JoinColumn para especificar el nombre de la fk, apunta automaticamente
     // al
     // id de la tabla cliente porque usamos la clase Cliente
     // Ponemos nullable false ya que no puede haber direcciones sin clientes
-    @ManyToOne
-    @JoinColumn(name = "clinte_id", nullable = false) // nombre de la foreing key
-    private Cliente cliente; // en vez de foreing key se pone cliente
+    // asignado
+    @ToString.Exclude
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
-    private List<Pedido> pedidos;
-
-     public void addPedido(Pedido pedido){
-        //añadimos la direccion a la lista de direcciones del cliente
-        pedidos.add(pedido);
-        //Le decimos que la direccion pertenece a este cliente(si, da error)
-        pedido.setDireccion(this);
-    }
 }
