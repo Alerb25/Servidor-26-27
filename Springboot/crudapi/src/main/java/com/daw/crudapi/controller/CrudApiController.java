@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.daw.crudapi.model.Cliente;
 import com.daw.crudapi.model.Direccion;
-import com.daw.crudapi.model.Pedido;
 import com.daw.crudapi.repository.ClienteRepository;
 import com.daw.crudapi.repository.DireccionRepository;
 import com.daw.crudapi.repository.PedidoRepository;
+
 import net.datafaker.Faker;
 
 @RestController // Las respuestas se devuelven como JSON
@@ -25,7 +25,6 @@ public class CrudApiController {
     @Autowired
     PedidoRepository repoPed;
 
-    // Faker
     private final Faker faker = new Faker(Locale.forLanguageTag("es-ES"));
 
     @GetMapping
@@ -33,12 +32,13 @@ public class CrudApiController {
         Cliente cliente = new Cliente();
         cliente.setNombre(faker.name().firstName());
         cliente.setApellidos(faker.name().lastName());
-        cliente.setMail(faker.internet().safeEmailAddress());
+        cliente.setMail(faker.internet().emailAddress());
         cliente.setTelf(faker.phoneNumber().cellPhone());
 
-
         // Creamos una direccion
-        Direccion direccion = new Direccion(null, faker.address().streetAddress(), Integer.toString(faker.number().numberBetween(1, 1000)), faker.address().city(), faker.address().zipCode(), null);
+        Direccion direccion = new Direccion(null, faker.address().streetAddress(),
+                Integer.toString(faker.number().numberBetween(1, 100)), faker.address().city(),
+                faker.address().zipCode(), null);
 
         cliente.addDireccion(direccion);
 
@@ -47,7 +47,7 @@ public class CrudApiController {
         // Devuelve una entity que representa al registro guardado en bd
         Cliente clienteGuardado = repoCli.save(cliente);
         // Guardamos tambien la dirección
-        // repoDir.save(direccion);
+        repoDir.save(direccion);
 
         // Si modificamos los datos del cliente y hacemos save otra vez
         // En este caso hace un update ya que la entity esta mapeada en bd
@@ -58,7 +58,6 @@ public class CrudApiController {
         cliente = repoCli.findById(1L).orElse(null);
 
         return clienteGuardado.toString();
-
     }
 
 }
