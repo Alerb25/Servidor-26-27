@@ -1,6 +1,10 @@
 package com.daw.crudapi.model;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,48 +12,59 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/** Entidad PRINCIPAL. */
 @Entity
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
-
+@NoArgsConstructor
 public class Paciente {
 
-    @Id // hace que sea clave primaria
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Para que sea automatico
-    private long id_paciente;
+    public static final List<String> GRUPOS = List.of("A+", "A-", "B+", "B-", "AB+", "AB-", "0+", "0-");
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idPaciente;
+
+    @NotBlank(message = "El nombre es obligatorio")
     @Column(nullable = false)
-    private String nombre_completo;
+    private String nombreCompleto;
 
+    @NotNull(message = "La fecha de nacimiento es obligatoria")
+    @Past(message = "La fecha de nacimiento debe ser pasada")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(nullable = false)
-    private Date fecha_nacimiento;
+    private LocalDate fechaNacimiento;
 
+    @NotBlank(message = "La dirección es obligatoria")
     @Column(nullable = false)
     private String direccion;
 
+    @NotBlank(message = "El grupo sanguíneo es obligatorio")
     @Column(nullable = false)
-    private String grupo_sanguineo;
+    private String grupoSanguineo;
 
-    // En mappedBy va el nombre del campo de la otra entidad que sirve para mapear
-    // esta
-    @OneToMany(mappedBy = "paciente", fetch = FetchType.EAGER)
-    private List<Paciente> pacientes;
+    // En mappedBy va el nombre del campo de Cita que es la clave foránea
+    @ToString.Exclude
+    @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY)
+    private List<Cita> citas = new ArrayList<>();
 
-    public void addPaciente(Paciente paciente) {
-        // añadimos la Paciente a la lista de Pacientees del cliente
-        pacientes.add(paciente);
-        // Le decimos que la Paciente pertenece a este paciente(si, da error)
-        paciente.setPaciente(this);
+    public void addCita(Cita cita) {
+        citas.add(cita);
+        cita.setPaciente(this);
     }
 
+    public void removeCita(Cita cita) {
+        citas.remove(cita);
+        cita.setPaciente(null);
+    }
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/menu :: head('Inicio')}"></head>
+<body>
+<nav th:replace="~{fragments/menu :: navbar('inicio')}"></nav>
+<div class="container">
+    <div class="p-5 mb-4 bg-light rounded-3 text-center">
+        <h1 class="display-5 fw-bold"><i class="bi bi-heart-pulse-fill text-primary"></i> Clínica DAW</h1>
+        <p class="lead">Gestión de pacientes y citas médicas.</p>
+        <a class="btn btn-primary btn-lg me-2" th:href="@{/pacientes}"><i class="bi bi-people"></i> Pacientes</a>
+        <a class="btn btn-outline-primary btn-lg" th:href="@{/citas}"><i class="bi bi-calendar-check"></i> Citas</a>
+    </div>
+</div>
+<div th:replace="~{fragments/menu :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/menu :: head('Búsqueda avanzada')}"></head>
+<body>
+<nav th:replace="~{fragments/menu :: navbar('busqueda')}"></nav>
+<div class="container">
+    <h2 class="mb-3"><i class="bi bi-search"></i> Búsqueda avanzada</h2>
+
+    <div class="row g-3 mb-4">
+
+        <!-- findByGrupoSanguineoAndNombreCompletoContainingIgnoreCase -->
+        <div class="col-lg-4">
+            <form class="card h-100 shadow-sm" method="get" th:action="@{/busqueda}">
+                <input type="hidden" name="tipo" value="pacientes-grupo">
+                <div class="card-header fw-semibold">Pacientes por grupo y nombre</div>
+                <div class="card-body">
+                    <label class="form-label small">Grupo sanguíneo</label>
+                    <select name="grupo" class="form-select mb-2" required>
+                        <option th:each="g : ${grupos}" th:value="${g}" th:text="${g}"></option>
+                    </select>
+                    <label class="form-label small">Nombre contiene</label>
+                    <input type="text" name="nombre" class="form-control">
+                </div>
+                <div class="card-footer"><button class="btn btn-primary btn-sm">Buscar</button></div>
+            </form>
+        </div>
+
+        <!-- findByFechaNacimientoBetweenAndDireccionContainingIgnoreCase -->
+        <div class="col-lg-4">
+            <form class="card h-100 shadow-sm" method="get" th:action="@{/busqueda}">
+                <input type="hidden" name="tipo" value="pacientes-nacimiento">
+                <div class="card-header fw-semibold">Pacientes por nacimiento y dirección</div>
+                <div class="card-body">
+                    <div class="row g-2 mb-2">
+                        <div class="col"><label class="form-label small">Desde</label>
+                            <input type="date" name="desde" class="form-control"></div>
+                        <div class="col"><label class="form-label small">Hasta</label>
+                            <input type="date" name="hasta" class="form-control"></div>
+                    </div>
+                    <label class="form-label small">Dirección contiene</label>
+                    <input type="text" name="direccion" class="form-control">
+                </div>
+                <div class="card-footer"><button class="btn btn-primary btn-sm">Buscar</button></div>
+            </form>
+        </div>
+
+        <!-- @Query: findConAlMenosCitas -->
+        <div class="col-lg-4">
+            <form class="card h-100 shadow-sm" method="get" th:action="@{/busqueda}">
+                <input type="hidden" name="tipo" value="pacientes-citas">
+                <div class="card-header fw-semibold">Pacientes con muchas citas</div>
+                <div class="card-body">
+                    <label class="form-label small">Mínimo de citas</label>
+                    <input type="number" name="minCitas" min="0" value="1" class="form-control">
+                </div>
+                <div class="card-footer"><button class="btn btn-primary btn-sm">Buscar</button></div>
+            </form>
+        </div>
+
+        <!-- findByEstadoCita...Between...GreaterThanEqual -->
+        <div class="col-lg-8">
+            <form class="card h-100 shadow-sm" method="get" th:action="@{/busqueda}">
+                <input type="hidden" name="tipo" value="citas-filtros">
+                <div class="card-header fw-semibold">Citas con filtros</div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-md-3"><label class="form-label small">Estado</label>
+                            <select name="estado" class="form-select">
+                                <option value="">Todos</option>
+                                <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
+                            </select></div>
+                        <div class="col-md-3"><label class="form-label small">Desde</label>
+                            <input type="date" name="desde" class="form-control"></div>
+                        <div class="col-md-3"><label class="form-label small">Hasta</label>
+                            <input type="date" name="hasta" class="form-control"></div>
+                        <div class="col-md-3"><label class="form-label small">Coste mínimo (€)</label>
+                            <input type="number" step="0.01" min="0" name="minCosto" class="form-control"></div>
+                    </div>
+                </div>
+                <div class="card-footer"><button class="btn btn-primary btn-sm">Buscar</button></div>
+            </form>
+        </div>
+
+        <!-- @Query: findMasCarasQueLaMedia -->
+        <div class="col-lg-4">
+            <form class="card h-100 shadow-sm" method="get" th:action="@{/busqueda}">
+                <input type="hidden" name="tipo" value="citas-caras">
+                <div class="card-header fw-semibold">Citas más caras que la media</div>
+                <div class="card-body">
+                    <label class="form-label small">Estado</label>
+                    <select name="estado" class="form-select">
+                        <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
+                    </select>
+                </div>
+                <div class="card-footer"><button class="btn btn-primary btn-sm">Buscar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== Resultados ===== -->
+    <div th:if="${buscado}" class="mb-5">
+        <h5 th:text="${titulo}"></h5>
+
+        <div th:if="${pacientes != null}" class="card shadow-sm">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light"><tr><th>ID</th><th>Nombre</th><th>Nacimiento</th><th>Dirección</th><th>Grupo</th><th>Citas</th></tr></thead>
+                <tbody>
+                <tr th:each="p : ${pacientes}">
+                    <td th:text="${p.idPaciente}"></td>
+                    <td><a th:href="@{/pacientes/detalle/{id}(id=${p.idPaciente})}" th:text="${p.nombreCompleto}"></a></td>
+                    <td th:text="${#temporals.format(p.fechaNacimiento, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${p.direccion}"></td>
+                    <td><span class="badge text-bg-danger" th:text="${p.grupoSanguineo}"></span></td>
+                    <td th:text="${#lists.size(p.citas)}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(pacientes)}"><td colspan="6" class="text-center text-muted py-3">Sin resultados</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:if="${citas != null}" class="card shadow-sm">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light"><tr><th>Fecha</th><th>Motivo</th><th>Estado</th><th>Coste</th><th>Paciente</th></tr></thead>
+                <tbody>
+                <tr th:each="c : ${citas}">
+                    <td th:text="${#temporals.format(c.fecha, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${c.motivoCita}"></td>
+                    <td th:text="${c.estadoCita}"></td>
+                    <td th:text="${#numbers.formatDecimal(c.costoEstimado, 1, 2)} + ' €'"></td>
+                    <td>
+                        <a th:if="${c.paciente != null}" th:href="@{/pacientes/detalle/{id}(id=${c.paciente.idPaciente})}"
+                           th:text="${c.paciente.nombreCompleto}"></a>
+                        <span th:if="${c.paciente == null}" class="text-muted">Sin paciente</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(citas)}"><td colspan="5" class="text-center text-muted py-3">Sin resultados</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/menu :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/menu :: head('Estadísticas')}"></head>
+<body>
+<nav th:replace="~{fragments/menu :: navbar('estadisticas')}"></nav>
+<div class="container mb-5">
+    <h2 class="mb-3"><i class="bi bi-bar-chart"></i> Estadísticas</h2>
+
+    <!-- Tarjetas resumen -->
+    <div class="row g-3 mb-4 text-center">
+        <div class="col-6 col-lg-2"><div class="card shadow-sm"><div class="card-body">
+            <div class="fs-3 fw-bold" th:text="${totalPacientes}"></div><div class="small text-muted">Pacientes</div></div></div></div>
+        <div class="col-6 col-lg-2"><div class="card shadow-sm"><div class="card-body">
+            <div class="fs-3 fw-bold" th:text="${totalCitas}"></div><div class="small text-muted">Citas</div></div></div></div>
+        <div class="col-6 col-lg-2"><div class="card shadow-sm"><div class="card-body">
+            <div class="fs-3 fw-bold" th:text="${citasSinPaciente}"></div><div class="small text-muted">Citas sin paciente</div></div></div></div>
+        <div class="col-6 col-lg-2"><div class="card shadow-sm"><div class="card-body">
+            <div class="fs-3 fw-bold" th:text="${#numbers.formatDecimal(costeMedio, 1, 2)} + ' €'"></div><div class="small text-muted">Coste medio</div></div></div></div>
+        <div class="col-6 col-lg-2"><div class="card shadow-sm"><div class="card-body">
+            <div class="fs-3 fw-bold" th:text="${#numbers.formatDecimal(costeTotal, 1, 2)} + ' €'"></div><div class="small text-muted">Coste total</div></div></div></div>
+        <div class="col-6 col-lg-2"><div class="card shadow-sm"><div class="card-body">
+            <div class="fs-3 fw-bold" th:text="${#numbers.formatDecimal(duracionMedia, 1, 1)} + ' min'"></div><div class="small text-muted">Duración media</div></div></div></div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-semibold">Pacientes por grupo sanguíneo</div>
+                <div class="card-body">
+                    <div th:each="b : ${porGrupo}" class="mb-2">
+                        <div class="d-flex justify-content-between small">
+                            <span th:text="${b.etiqueta}"></span><span th:text="${b.valor}"></span></div>
+                        <div class="progress"><div class="progress-bar bg-danger" th:style="|width: ${b.porcentaje}%|"></div></div>
+                    </div>
+                    <p th:if="${#lists.isEmpty(porGrupo)}" class="text-muted mb-0">Sin datos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-semibold">Citas por estado</div>
+                <div class="card-body">
+                    <div th:each="b : ${porEstado}" class="mb-2">
+                        <div class="d-flex justify-content-between small">
+                            <span th:text="${b.etiqueta}"></span><span th:text="${b.valor}"></span></div>
+                        <div class="progress"><div class="progress-bar" th:style="|width: ${b.porcentaje}%|"></div></div>
+                    </div>
+                    <p th:if="${#lists.isEmpty(porEstado)}" class="text-muted mb-0">Sin datos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-semibold">Los 5 pacientes de más edad</div>
+                <ul class="list-group list-group-flush">
+                    <li th:each="p : ${masMayores}" class="list-group-item d-flex justify-content-between">
+                        <a th:href="@{/pacientes/detalle/{id}(id=${p.idPaciente})}" th:text="${p.nombreCompleto}"></a>
+                        <span class="text-muted small" th:text="${#temporals.format(p.fechaNacimiento, 'dd/MM/yyyy')}"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-semibold">Pacientes con al menos
+                    <form class="d-inline" method="get" th:action="@{/estadisticas}">
+                        <input type="hidden" name="grupo" th:value="${grupoElegido}">
+                        <input type="number" name="minCitas" min="0" th:value="${minCitas}"
+                               class="form-control form-control-sm d-inline-block" style="width: 65px;" onchange="this.form.submit()">
+                    </form> citas</div>
+                <ul class="list-group list-group-flush">
+                    <li th:each="p : ${conMuchasCitas}" class="list-group-item d-flex justify-content-between">
+                        <a th:href="@{/pacientes/detalle/{id}(id=${p.idPaciente})}" th:text="${p.nombreCompleto}"></a>
+                        <span class="badge text-bg-primary" th:text="${#lists.size(p.citas)}"></span>
+                    </li>
+                    <li th:if="${#lists.isEmpty(conMuchasCitas)}" class="list-group-item text-muted">Ninguno</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header fw-semibold">Contar pacientes por grupo</div>
+                <div class="card-body">
+                    <form method="get" th:action="@{/estadisticas}" class="mb-3">
+                        <input type="hidden" name="minCitas" th:value="${minCitas}">
+                        <select name="grupo" class="form-select" onchange="this.form.submit()">
+                            <option th:each="g : ${grupos}" th:value="${g}" th:text="${g}" th:selected="${g == grupoElegido}"></option>
+                        </select>
+                    </form>
+                    <div class="text-center">
+                        <div class="display-4 fw-bold" th:text="${totalGrupoElegido}"></div>
+                        <div class="text-muted">pacientes del grupo <b th:text="${grupoElegido}"></b></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/menu :: scripts}"></div>
+</body>
+</html>
