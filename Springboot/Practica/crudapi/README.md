@@ -6,7 +6,7 @@ Aplicación web desarrollada con **Spring Boot**, **Spring Data JPA** y **Thymel
 
 **Temática:** gestión sanitaria básica. Una clínica necesita registrar a sus pacientes y llevar el control de las citas de cada uno (motivo, fecha, estado, duración y coste estimado).
 
-Se trabaja con dos entidades relacionadas 1:N:
+Se trabaja con dos entidades relacionadas 1:N en esta práctica:
 
 | Entidad | Rol | Descripción |
 |---|---|---|

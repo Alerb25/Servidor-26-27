@@ -11,6 +11,7 @@ import com.daw.crudapi.model.Paciente;
 
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
+        //LA principal
     // ---- 2 búsquedas findBy... con varias condiciones ----
     List<Paciente> findByGrupoSanguineoAndNombreCompletoContainingIgnoreCase(String grupoSanguineo, String nombre);
 

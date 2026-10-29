@@ -13,6 +13,7 @@ import com.daw.crudapi.model.Cita;
 
 public interface CitaRepository extends JpaRepository<Cita, Long> {
 
+        //LA secundaria
     // ---- 2 borrados por condición ----
     @Transactional
     long deleteByEstadoCitaAndFechaBefore(String estadoCita, LocalDate fecha);

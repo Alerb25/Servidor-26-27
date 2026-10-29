@@ -1,0 +1,6 @@
+/**
+ * GetMapping
+ */
+public @interface GetMapping {
+
+}
